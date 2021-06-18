@@ -60,7 +60,11 @@ router.use((req, res, next) => {
     } else {
       next();
     }
-  } else if (req.method === 'POST' || req.method === 'PATCH' || req.method === 'DELETE') {
+  } else if (
+    req.method === 'POST' ||
+    req.method === 'PATCH' ||
+    req.method === 'DELETE'
+  ) {
     const { exhibition } = req.body;
     if (!constants.EXHIBITIONS.includes(exhibition)) {
       res.status(404).json('Exhibition not specified or not found');
@@ -131,10 +135,42 @@ router.patch('/ticket/status', (req, res) => {
     });
 });
 
-router.delete('/ticket', (req,res) => {
-  const { exhibition } = req.body;
+router.delete('/ticket', (req, res) => {
+  const { exhibition, ticketNumber } = req.body;
+  const ticket = database.collection(exhibition);
+  ticket
+    .deleteOne({
+      ticketNumber,
+    })
+    .then((result) => {
+      if (result.deletedCount === 1) {
+        res.json('Success');
+      } else {
+        throw new TypeError("Request body error")
+      }
+    })
+    .catch((error) => {
+      logger.fatal(error);
+      res.status(500).json('Internal server error');
+    });
+});
 
-})
+router.delete('/tickets', (req, res) => {
+  const { exhibition, ticketNumbers } = req.body;
+  const ticket = database.collection(exhibition);
+  ticket
+    .deleteMany({
+      ticketNumber: { $in: ticketNumbers },
+    })
+    .then((result) => {
+        res.json('Success');
+    })
+    .catch((error) => {
+      logger.fatal(error);
+      res.status(500).json('Internal server error');
+    });
+});
+
 
 
 module.exports = router;
