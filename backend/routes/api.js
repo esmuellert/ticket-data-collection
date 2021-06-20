@@ -121,7 +121,6 @@ router.post('/tickets', (req, res) => {
 
 router.get('/tickets', (req, res) => {
   const { exhibition } = req.query;
-  console.log(exhibition);
   const ticket = database.collection(exhibition);
   ticket
     .find()
