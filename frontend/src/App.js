@@ -352,7 +352,7 @@ function App() {
                         pattern: /[0-9]/,
                         message: "票号只能是数字",
                       },
-                      { max: 5, message: "票号不能超过5位" },
+                      { len: 5, message: "票号必须是5位" },
                     ]}
                   >
                     <Input
@@ -379,7 +379,7 @@ function App() {
                         pattern: /[0-9]/,
                         message: "票号只能是数字",
                       },
-                      { max: 5, message: "票号不能超过5位" },
+                      { len: 5, message: "票号必须是5位" },
                     ]}
                     noStyle
                   >
@@ -403,7 +403,7 @@ function App() {
                       pattern: /[0-9]/,
                       message: "票号只能是数字",
                     },
-                    { max: 5, message: "票号不能超过5位" },
+                    { len: 5, message: "票号必须是5位" },
                   ]}
                 >
                   <Input style={{ width: 200 }} />
