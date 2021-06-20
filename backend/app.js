@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 
 var app = express();
@@ -25,7 +24,6 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 });
 
-// app.use('/', indexRouter);
 app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler

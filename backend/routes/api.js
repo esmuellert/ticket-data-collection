@@ -45,19 +45,20 @@ const initDatabase = () => {
 
 const database = initDatabase();
 
-router.use(cors({
-  origin: constants.CROSSORIGIN,
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}))
+router.use(
+  cors({
+    origin: constants.CROSSORIGIN,
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  })
+);
 
-
-router.post('/auth', (req,res) => {
+router.post('/auth', (req, res) => {
   if (req.body.password === constants.PASSWORD) {
-    res.json({token:constants.TOKEN});
+    res.json({ token: constants.TOKEN });
   } else {
-    res.status(403).json("Permission denied")}
-})
-
+    res.status(403).json('Permission denied');
+  }
+});
 
 router.use((req, res, next) => {
   if (req.get('Authorization') === constants.TOKEN) {
@@ -96,7 +97,7 @@ router.post('/ticket', (req, res) => {
   const { exhibition, ...document } = req.body;
   const ticket = database.collection(exhibition);
   ticket
-    .insertOne({ ...document,exhibition })
+    .insertOne({ ...document, exhibition })
     .then(() => res.status(200).json('Success'))
     .catch((error) => {
       res.status(409).json('This ticket number has already been used');

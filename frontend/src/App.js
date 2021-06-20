@@ -22,11 +22,8 @@ function App() {
   const [addTicketVisible, setAddTicketVisible] = useState(false);
   const [serialNumber, setSerialNumber] = useState(false);
   const [filter, setFilter] = useState("");
-  const [authVisible, setAuthVisible] = useState(true);
 
   const toggleAddTicketVisible = () => setAddTicketVisible(!addTicketVisible);
-
-  const toggleAuthVisible = () => setAuthVisible(!authVisible);
 
   const [TOKEN, setTOKEN] = useState(localStorage.getItem("token") || "");
 
@@ -448,7 +445,7 @@ function App() {
       <Modal
         okButtonProps={{ htmlType: "submit", form: "auth" }}
         title="请输入密码"
-        visible={authVisible}
+        visible
       >
         <Form
           name="auth"
