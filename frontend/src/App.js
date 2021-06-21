@@ -10,7 +10,7 @@ import {
   Input,
   Select,
 } from "antd";
-import { useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import { API } from "./constants";
 
@@ -31,38 +31,38 @@ function App() {
     headers: { Authorization: TOKEN },
   };
 
-  const fetchData = (exhibition) => {
+  const fetchData = useCallback((exhibition) => {
     if (TOKEN) {
       axios
-        .get(`${API}/tickets`, {
-          params: {
-            exhibition,
-          },
-          headers: {
-            Authorization: TOKEN,
-          },
-        })
-        .then((res) => {
-          if (exhibition === "chagall") {
-            setChagall(res.data);
-          } else if (exhibition === "japan") {
-            setJapan(res.data);
-          }
-        })
-        .catch((error) => {
-          notification.error({
-            message: "Error",
-            description: `获取${exhibition}数据失败！`,
+          .get(`${API}/tickets`, {
+            params: {
+              exhibition,
+            },
+            headers: {
+              Authorization: TOKEN,
+            },
+          })
+          .then((res) => {
+            if (exhibition === "chagall") {
+              setChagall(res.data);
+            } else if (exhibition === "japan") {
+              setJapan(res.data);
+            }
+          })
+          .catch((error) => {
+            notification.error({
+              message: "Error",
+              description: `获取${exhibition}数据失败！`,
+            });
+            console.error(error);
           });
-          console.error(error);
-        });
     }
-  };
+  }, [TOKEN])
 
   useEffect(() => {
     fetchData("japan");
     fetchData("chagall");
-  }, [TOKEN]);
+  }, [fetchData]);
 
   const ticketNumberAddZeros = (number) => {
     let str = number.toString();
@@ -201,6 +201,7 @@ function App() {
             添加纸质票
           </Button>
         }
+        // onChange={(value) => fetchData(value)}
       >
         <TabPane tab="Japan" key="japan">
           {searchAnything}
